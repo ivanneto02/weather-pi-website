@@ -1,6 +1,6 @@
-# sv
+# WeatherPI Data Visualization
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+Website build with Svelte to display the data gathered by Raspberry Pi 1 located in my apartment.
 
 ## Creating a project
 
