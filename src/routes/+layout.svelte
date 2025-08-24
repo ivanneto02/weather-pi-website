@@ -7,6 +7,16 @@
     import Content from "$lib/components/Content.svelte";
     import Main from "$lib/components/Main.svelte";
 
+    import { onMount } from "svelte";
+    import { browser } from "$app/environment";
+    
+    // ensures fluent is registered before mounting
+    onMount(async () => {
+        if (!browser) return;
+        const { ensureFluentRegistered } = await import("$lib/components/fluent");
+        await ensureFluentRegistered();
+    });
+
 	let { children } = $props();
 </script>
 
