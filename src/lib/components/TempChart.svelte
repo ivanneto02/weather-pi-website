@@ -9,7 +9,10 @@
 </script>
 
 <StandardChart>
-    <h2>TempC</h2>
+    <div class="flex flex-row justify-center items-center">
+        <h2>Temp</h2>
+        <h2>(C)</h2>
+    </div>
     <h1>{reading ? processTmpHumPreReading(reading) : (0.00).toFixed(2)}</h1>
 </StandardChart>
 
