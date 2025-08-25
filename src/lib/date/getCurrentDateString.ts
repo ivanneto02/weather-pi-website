@@ -10,7 +10,7 @@ export function getCurrentDateString() {
     // time
     let hour = date.getHours();
     let thour = hour % 12 ? hour % 12 : 12;
-    let ampm = thour <= 12 ? "pm" : "am";
+    let ampm = hour >= 12 ? "pm" : "am";
     let minute = String(date.getMinutes()).padStart(2, '0');
     let second = String(date.getSeconds()).padStart(2, '0');
 
