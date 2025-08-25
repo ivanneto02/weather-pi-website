@@ -11,7 +11,7 @@
 <StandardChart>
     <div class="flex flex-row justify-center items-center gap-1">
         <h3>Temp</h3>
-        <p>(%)</p>
+        <p>(C)</p>
     </div>
     <h1>{reading ? processTmpHumPreReading(reading) : (0.00).toFixed(2)}</h1>
 </StandardChart>
