@@ -1,0 +1,13 @@
+[Unit]
+Description=PMS5003 Data Gathering
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/home/ivan/programs/venv/bin/python /home/ivan/programs/airqual.py
+User=ivan
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target 

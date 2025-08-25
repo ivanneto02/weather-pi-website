@@ -1,0 +1,11 @@
+echo "Starting Data Gathering Program!"
+
+source /home/ivan/programs/venv/bin/activate
+
+python /home/ivan/programs/airqual.py &
+
+python /home/ivan/programs/tmp_hum_pre.py &
+
+echo "Started Temperature, Humidity, and Pressure"
+echo "Done. Run 'ps' to check the processes"
+echo "If you need to terminate a process, use kill -9 PID1 PID2 ..."
