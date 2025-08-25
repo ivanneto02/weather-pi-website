@@ -13,12 +13,21 @@
     let hum: number | null = null;
     let pre: number | null = null;
     
-    // air quality data
+    // particle count
     let count_03: number | null = null;
     let count_05: number | null = null;
     let count_10: number | null = null;
     let count_25: number | null = null;
     let count_50: number | null = null;
+
+    // harmful particles
+    let PM1_0_1: number | null = null;
+    let PM1_0_2: number | null = null;
+    let PM2_5_1: number | null = null;
+    let PM2_5_2: number | null = null;
+    let PM10_1: number | null = null;
+    let PM10_2: number | null = null;
+
 
     let dt = getCurrentDateString();
 
@@ -99,12 +108,39 @@
 
 <h2>Air Quality</h2>
 
+<div class="mb-5">
+    <p class="text-red-600">key = calibration for indoors</p>
+    <p class="text-indigo-500">key = calibration for outdoors</p>
+</div>
+
 <div class="flex flex-col gap-1">
-    <AirQualityChart reading={count_03} title={"0.3 µm³ particles per 0.1L"}/>
-    <AirQualityChart reading={count_05} title={"0.5 µm³ particles per 0.1L"}/>
-    <AirQualityChart reading={count_10} title={"1.0 µm³ particles per 0.1L"}/>
-    <AirQualityChart reading={count_25} title={"2.5 µm³ particles per 0.1L"}/>
-    <AirQualityChart reading={count_50} title={"5.0 µm³ particles per 0.1L"}/>
+    <div class="flex flex-row gap-1">
+        <AirQualityChart reading={count_03} title={"0.3 µm³ count per 0.1L"}/>
+        <div class="flex flex-row gap-1">
+            <AirQualityChart color="text-red-600" reading={PM1_0_1} title={"PM1.0"}/>
+            <AirQualityChart color="text-indigo-500" reading={PM1_0_2} title={"PM1.0"}/>
+        </div>
+    </div>
+    <div class="flex flex-row gap-1">
+        <AirQualityChart reading={count_05} title={"0.5 µm³ count per 0.1L"}/>
+        <div class="flex flex-row gap-1">
+            <AirQualityChart color="text-red-600" reading={PM2_5_1} title={"PM2.5"}/>
+            <AirQualityChart color="text-indigo-500" reading={PM2_5_2} title={"PM2.5"}/>
+        </div>
+    </div>
+    <div class="flex flex-col gap-1">
+        <div class="flex flex-row gap-1">
+            <AirQualityChart color="text-red-600" reading={PM10_1} title={"PM10"}/>
+            <AirQualityChart color="text-indigo-600" reading={PM10_2} title={"PM10"}/>
+        </div>
+        <AirQualityChart reading={count_10} title={"1.0 µm³ count per 0.1L"}/>
+    </div>
+    <div class="flex flex-row gap-1">
+        <AirQualityChart reading={count_25} title={"2.5 µm³ count per 0.1L"}/>
+    </div>
+    <div class="flex flex-row gap-1">
+        <AirQualityChart reading={count_50} title={"5.0 µm³ count per 0.1L"}/>
+    </div>
 </div>
 
 <div>

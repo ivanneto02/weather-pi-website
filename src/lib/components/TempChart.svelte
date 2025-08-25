@@ -5,7 +5,6 @@
     let { reading } = $props();
 
     import { processTmpHumPreReading } from "$lib/processing/processTmpHumPreReading.ts";
-
 </script>
 
 <StandardChart>
