@@ -28,11 +28,11 @@
 	<Chart
 		data={dataSeries}
 		x="index"
-		y="value"
+		y={(d) => d.value.toFixed(2)}
 		xDomain={[0, dataSeries.length - 1]}
 		{xScale}
 		{yScale}
-		padding={{ left: 40, bottom: 34, top: 16, right: 16 }}
+		padding={{ left: 60, bottom: 34, top: 16, right: 16 }}
 		yNice
 		tooltip={{ mode: 'bisect-x' }}
 	>
@@ -42,7 +42,7 @@
 				tickLabelProps={{ class: 'text-sm text-blue' }}
 				grid
 				rule
-				label="value"
+				label="temperature"
 			/>
 			<Axis
 				labelProps={{ class: 'text-sm text-blue' }}
@@ -55,12 +55,5 @@
 			<Highlight points lines />
 			<Labels format="decimal" />
 		</Svg>
-
-		<Tooltip.Root let:data>
-			<Tooltip.Header>Sample {data.index}</Tooltip.Header>
-			<Tooltip.List>
-				<Tooltip.Item label="value" value={data.value} color="red" />
-			</Tooltip.List>
-		</Tooltip.Root>
 	</Chart>
 </div>
