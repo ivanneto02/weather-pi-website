@@ -3,10 +3,13 @@
     import PreChart from "$lib/components/PreChart.svelte";
     import HumChart from "$lib/components/HumChart.svelte";
     import AirQualityChart from "$lib/components/AirQualityChart.svelte";
+    import ThreeLinesChart from "$lib/components/ThreeLinesChart.svelte";
 
     import { onMount } from "svelte";
     import { getCurrentDateString } from "$lib/date/getCurrentDateString.ts";
     import { meanAirQualityData } from "$lib/processing/meanAirQualityData.ts";
+
+    let tmpHumPreData: Array<any> | null = null;
 
     // temperature, humidity, pressure data
     let tmp: number | null = null;
@@ -27,7 +30,6 @@
     let PM2_5_2: number | null = null;
     let PM10_1: number | null = null;
     let PM10_2: number | null = null;
-
 
     let dt = getCurrentDateString();
 
@@ -72,6 +74,7 @@
                 return response.json();
         }).then(response => {
                 // UPDATE UI
+                tmpHumPreData = response;
                 tmp = response[0].temperature;
                 hum = response[0].humidity;
                 pre = response[0].pressure;
@@ -105,6 +108,8 @@
     <HumChart reading={hum}/>
     <PreChart reading={pre}/>
 </div>
+
+<ThreeLinesChart data={tmpHumPreData} />
 
 <h2>Air Quality</h2>
 

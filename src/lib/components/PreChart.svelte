@@ -2,7 +2,7 @@
 <script lang="ts">
     import StandardChart from "$lib/components/StandardChart.svelte";
 
-    let { reading } = $props();
+    export let reading: number | null = null;
 
     import { processTmpHumPreReading } from "$lib/processing/processTmpHumPreReading.ts";
 </script>

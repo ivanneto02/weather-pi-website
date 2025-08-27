@@ -1,0 +1,66 @@
+<script lang="ts">
+	import { Svg, Axis, Spline, Chart, Highlight, Labels, Tooltip } from 'layerchart';
+	import { scaleLinear } from 'd3-scale';
+	import { curveBumpX } from 'd3-shape';
+
+	type Row = {
+		temperature: number;
+		timestamp: string;
+		pk: string;
+		humidity: number;
+		pressure: number;
+	};
+
+	export let data: Row[] = [];
+
+	$: dataSeries = data
+		? data.map((row, i) => ({
+				index: i,
+				value: +row.temperature
+			}))
+		: [];
+
+	const xScale = scaleLinear();
+	const yScale = scaleLinear();
+</script>
+
+<div class="h-[500px] p-4 rounded bg-black">
+	<Chart
+		data={dataSeries}
+		x="index"
+		y="value"
+		xDomain={[0, dataSeries.length - 1]}
+		{xScale}
+		{yScale}
+		padding={{ left: 40, bottom: 34, top: 16, right: 16 }}
+		yNice
+		tooltip={{ mode: 'bisect-x' }}
+	>
+		<Svg>
+			<Axis
+				placement="left"
+				tickLabelProps={{ class: 'text-sm text-blue' }}
+				grid
+				rule
+				label="value"
+			/>
+			<Axis
+				labelProps={{ class: 'text-sm text-blue' }}
+				placement="bottom"
+				rule
+				class="text-white stroke-blue-200"
+				label="sample (30 seconds)"
+			/>
+			<Spline class="stroke-primary stroke-2" curve={curveBumpX} draw />
+			<Highlight points lines />
+			<Labels format="decimal" />
+		</Svg>
+
+		<Tooltip.Root let:data>
+			<Tooltip.Header>Sample {data.index}</Tooltip.Header>
+			<Tooltip.List>
+				<Tooltip.Item label="value" value={data.value} color="red" />
+			</Tooltip.List>
+		</Tooltip.Root>
+	</Chart>
+</div>

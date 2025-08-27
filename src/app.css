@@ -1,5 +1,11 @@
 @import 'tailwindcss';
 
+@source "../node_modules/layerchart/dist";
+
+@import "@layerstack/tailwind/core.css";
+
+@import "@layerstack/tailwind/themes/all.css";
+
 h1 {
     font-size: 2em;
     margin-top: 0.5em;
