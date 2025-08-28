@@ -50,11 +50,11 @@
 			.then((response) => {
 				// UPDATE UI
 				let processed_response = meanAirQualityData(response);
-				count_03 = processed_response.count_03;
-				count_05 = processed_response.count_05;
-				count_10 = processed_response.count_10;
-				count_25 = processed_response.count_25;
-				count_50 = processed_response.count_50;
+				count_03 = processed_response.count_03.toFixed(2);
+				count_05 = processed_response.count_05.toFixed(2);
+				count_10 = processed_response.count_10.toFixed(2);
+				count_25 = processed_response.count_25.toFixed(2);
+				count_50 = processed_response.count_50.toFixed(2);
 			});
 	}
 
