@@ -32,7 +32,7 @@
 	<Chart
 		data={dataSeries}
 		x="index"
-		y={(d) => d.temperature}
+		y={(d) => d.temperature.toFixed(2)}
 		xDomain={[0, dataSeries.length - 1]}
 		{xScale}
 		{yScale}
@@ -65,7 +65,7 @@
 			{#snippet children(ctx)}
 				<Tooltip.Header>Sample {ctx?.data.index}</Tooltip.Header>
 				<Tooltip.List>
-					<Tooltip.Item label="value" value={ctx?.data.temperature} />
+					<Tooltip.Item label="value" value={`${ctx?.data.temperature.toFixed(2)} C`} />
 				</Tooltip.List>
 			{/snippet}
 		</Tooltip.Root>
@@ -120,11 +120,11 @@
 	<Chart
 		data={dataSeries}
 		x="index"
-		y={(d) => d.pressure}
+		y={(d) => d.pressure.toFixed(3)}
 		xDomain={[0, dataSeries.length - 1]}
 		{xScale}
 		{yScale}
-		padding={{ left: 60, bottom: 34, top: 16, right: 16 }}
+		padding={{ left: 70, bottom: 34, top: 16, right: 16 }}
 		yNice
 		tooltip={{ mode: 'bisect-x' }}
 	>
@@ -134,7 +134,7 @@
 				tickLabelProps={{ class: 'text-sm text-blue' }}
 				grid
 				rule
-				label="pressure (kPa)"
+				label="pressure (hectopascal)"
 			/>
 			<Axis
 				labelProps={{ class: 'text-sm text-blue' }}
@@ -153,7 +153,7 @@
 			{#snippet children(ctx)}
 				<Tooltip.Header>Sample {ctx?.data.index}</Tooltip.Header>
 				<Tooltip.List>
-					<Tooltip.Item label="value" value={ctx?.data.pressure.toFixed(2)} />
+					<Tooltip.Item label="value" value={`${ctx?.data.pressure.toFixed(3)} hPa`} />
 				</Tooltip.List>
 			{/snippet}
 		</Tooltip.Root>

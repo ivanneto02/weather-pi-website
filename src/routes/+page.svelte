@@ -104,6 +104,8 @@
 
 <p>{dt.dayName}, {dt.month} {dt.day}, {dt.year} ({dt.thour}:{dt.minute}:{dt.second} {dt.ampm})</p>
 
+<h3>Mean values in the last 10 minutes:</h3>
+
 <div class="flex flex-row gap-1 mb-1">
 	<TempChart reading={tmp} />
 	<HumChart reading={hum} />
