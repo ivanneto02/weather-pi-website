@@ -31,7 +31,9 @@
 	const yScale = scaleLinear();
 </script>
 
-<div class="h-[500px] p-4 rounded bg-black">
+<h2 class="text-center">Temperature</h2>
+
+<div class="h-[250px] p-4 rounded bg-black">
 	<Chart
 		data={dataSeries}
 		x={(d) => new Date(d.timestamp)}
@@ -76,7 +78,9 @@
 	</Chart>
 </div>
 
-<div class="h-[500px] p-4 rounded bg-black">
+<h2 class="text-center">Humidity</h2>
+
+<div class="h-[250px] p-4 rounded bg-black">
 	<Chart
 		data={dataSeries}
 		x={(d) => new Date(d.timestamp)}
@@ -122,7 +126,9 @@
 	</Chart>
 </div>
 
-<div class="h-[500px] p-4 rounded bg-black">
+<h2 class="text-center">Pressure</h2>
+
+<div class="h-[250px] p-4 rounded bg-black">
 	<Chart
 		data={dataSeries}
 		x={(d) => new Date(d.timestamp)}

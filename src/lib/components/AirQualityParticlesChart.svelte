@@ -2,6 +2,7 @@
 	import { Svg, Axis, Spline, Chart, Highlight, Legend } from 'layerchart';
 	import { scaleLinear, scaleOrdinal, scaleTime } from 'd3-scale';
 	import { curveBumpX } from 'd3-shape';
+	import { format } from 'date-fns';
 
 	type Row = {
 		timestamp: string;
@@ -32,6 +33,8 @@
 	const yScale = scaleLinear();
 </script>
 
+<h2 class="text-center">Particle Count Over Time</h2>
+
 <div class="h-[25px] p-4 rounded bg-black">
 	<Chart
 		data={[{ name: '0.30 µm³' }, { name: '0.50 µm³' }, { name: '1.00 µm³' }]}
@@ -39,7 +42,7 @@
 		cScale={scaleOrdinal()}
 		cRange={['var(--color-red-800)', 'var(--color-green-800)', 'var(--color-blue-800)']}
 	>
-		<Legend class="text-xs" placement="top-right" variant="swatches" />
+		<Legend class="text-xs" placement="top" variant="swatches" />
 	</Chart>
 </div>
 <div class="h-[25px] p-4 rounded bg-black">
@@ -49,7 +52,7 @@
 		cScale={scaleOrdinal()}
 		cRange={['var(--color-white)', 'var(--color-indigo-800)', 'var(--color-pink-800)']}
 	>
-		<Legend class="text-xs" placement="top-right" variant="swatches" />
+		<Legend class="text-xs" placement="top" variant="swatches" />
 	</Chart>
 </div>
 
