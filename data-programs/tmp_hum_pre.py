@@ -14,6 +14,7 @@ ACCESS_KEY_SECRET = os.getenv("ACCESS_KEY_SECRET")
 REGION = os.getenv("REGION")
 SERVICE = os.getenv("SERVICE")
 URL = os.getenv("TMP_HUM_PRE_URL")
+NUM_SAMPLES = int(os.getenv("NUM_SAMPLES"))
 
 def parse_data(data):
     return {
@@ -26,13 +27,14 @@ def parse_data(data):
 
 def collect_samples(device, i2c_bus, device_address, calibration_params):
     samples = list()
-    for i in range(0, 10):
+    for i in range(0, NUM_SAMPLES):
         data = None
         try:
             data = device.sample(i2c_bus, device_address, calibration_params)
         except Exception as e:
             time.sleep(3)
-            continue # DO NOT ADD DATA TO SAMPLES IF UNABLE TO COLLECT
+            print("[TMP_HUM_PRE] ERROR GATHERING SINGLE SAMPLE, CONTINUING", e)
+            continue # DO NOT ADD DATA TO SAMPLES IF UNABLE TO COLLECT, BUT CONTINUE GATHERING SAMPLES
         sample = parse_data((data.temperature, data.humidity, data.pressure))
         samples.append(sample)
         time.sleep(3)
@@ -55,11 +57,11 @@ def main():
                         json={"data": samples},
                         auth=auth,
                 )
-                print(res.json())
+                print("[TMP_HUM_PRE]", res.json())
             except Exception as e:
-                print("SKIPPING SAMPLE")
-    except:
-        print(f"ERROR GATHERING DATA")
+                print("[TMP_HUM_PRE] SKIPPING SAMPLE", e)
+    except Exception as e:
+        print(f"[TMP_HUM_PRE] ERROR GATHERING DATA, SHUTTING DOWN GRACEFULLY", e)
         # nothing will be sent to DynamoDB if error
 
 if __name__ == "__main__":

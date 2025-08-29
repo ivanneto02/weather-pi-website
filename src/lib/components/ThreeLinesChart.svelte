@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { Svg, Axis, Spline, Chart, Highlight, Labels, Tooltip } from 'layerchart';
-	import { scaleLinear } from 'd3-scale';
+	import { scaleLinear, scaleTime } from 'd3-scale';
 	import { curveBumpX } from 'd3-shape';
+	import { formatDate, PeriodType } from '@layerstack/utils';
+	import { format } from 'date-fns';
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 
@@ -18,27 +20,27 @@
 	$: dataSeries = data
 		? data.map((row, i) => ({
 				index: i,
+				timestamp: +row.timestamp,
 				temperature: +row.temperature,
 				humidity: +row.humidity,
 				pressure: +row.pressure
 			}))
 		: [];
 
-	const xScale = scaleLinear();
+	const xScale = scaleTime();
 	const yScale = scaleLinear();
 </script>
 
 <div class="h-[500px] p-4 rounded bg-black">
 	<Chart
 		data={dataSeries}
-		x="index"
+		x={(d) => new Date(d.timestamp)}
 		y={(d) => d.temperature.toFixed(2)}
-		xDomain={[0, dataSeries.length - 1]}
 		{xScale}
 		{yScale}
 		padding={{ left: 60, bottom: 34, top: 16, right: 16 }}
 		yNice
-		tooltip={{ mode: 'bisect-x' }}
+		tooltip={{ mode: 'voronoi' }}
 	>
 		<Svg>
 			<Axis
@@ -53,7 +55,7 @@
 				placement="bottom"
 				rule
 				class="text-white stroke-blue-200"
-				label="least to most recent, 30-second intervals"
+				label="time"
 			/>
 			<Spline class="stroke-primary stroke-2" curve={curveBumpX} draw />
 			<Highlight points lines />
@@ -63,9 +65,11 @@
         children and avoid invalid_default_snippet runtime error -->
 		<Tooltip.Root>
 			{#snippet children(ctx)}
-				<Tooltip.Header>Sample {ctx?.data.index}</Tooltip.Header>
+				<Tooltip.Header
+					>{format(new Date(ctx?.data.timestamp), 'eee, MMM do, hh:mm:ss')}</Tooltip.Header
+				>
 				<Tooltip.List>
-					<Tooltip.Item label="value" value={`${ctx?.data.temperature.toFixed(2)} C`} />
+					<Tooltip.Item label="temperature" value={`${ctx?.data.temperature.toFixed(2)} C`} />
 				</Tooltip.List>
 			{/snippet}
 		</Tooltip.Root>
@@ -75,14 +79,13 @@
 <div class="h-[500px] p-4 rounded bg-black">
 	<Chart
 		data={dataSeries}
-		x="index"
+		x={(d) => new Date(d.timestamp)}
 		y={(d) => d.humidity.toFixed(2)}
-		xDomain={[0, dataSeries.length - 1]}
 		{xScale}
 		{yScale}
 		padding={{ left: 60, bottom: 34, top: 16, right: 16 }}
 		yNice
-		tooltip={{ mode: 'bisect-x' }}
+		tooltip={{ mode: 'voronoi' }}
 	>
 		<Svg>
 			<Axis
@@ -97,7 +100,8 @@
 				placement="bottom"
 				rule
 				class="text-white stroke-blue-200"
-				label="least to most recent, 30-second intervals"
+				format={(d) => formatDate(d, PeriodType.TimeOnly, { variant: 'short' })}
+				label="time"
 			/>
 			<Spline class="stroke-secondary stroke-2" curve={curveBumpX} draw />
 			<Highlight points lines />
@@ -107,9 +111,11 @@
         children and avoid invalid_default_snippet runtime error -->
 		<Tooltip.Root>
 			{#snippet children(ctx)}
-				<Tooltip.Header>Sample {ctx?.data.index}</Tooltip.Header>
+				<Tooltip.Header
+					>{format(new Date(ctx?.data.timestamp), 'eee, MMM do, hh:mm:ss')}</Tooltip.Header
+				>
 				<Tooltip.List>
-					<Tooltip.Item label="value" value={`${ctx?.data.humidity.toFixed(2)}%`} />
+					<Tooltip.Item label="humidity" value={`${ctx?.data.humidity.toFixed(2)}%`} />
 				</Tooltip.List>
 			{/snippet}
 		</Tooltip.Root>
@@ -119,14 +125,13 @@
 <div class="h-[500px] p-4 rounded bg-black">
 	<Chart
 		data={dataSeries}
-		x="index"
+		x={(d) => new Date(d.timestamp)}
 		y={(d) => d.pressure.toFixed(3)}
-		xDomain={[0, dataSeries.length - 1]}
 		{xScale}
 		{yScale}
 		padding={{ left: 70, bottom: 34, top: 16, right: 16 }}
 		yNice
-		tooltip={{ mode: 'bisect-x' }}
+		tooltip={{ mode: 'voronoi' }}
 	>
 		<Svg>
 			<Axis
@@ -141,7 +146,8 @@
 				placement="bottom"
 				rule
 				class="text-white stroke-blue-200"
-				label="least to most recent, 30-second intervals"
+				format={(d) => formatDate(d, PeriodType.TimeOnly, { variant: 'short' })}
+				label="time"
 			/>
 			<Spline class="stroke-green-800 stroke-2" curve={curveBumpX} draw />
 			<Highlight points lines />
@@ -151,9 +157,11 @@
         children and avoid invalid_default_snippet runtime error -->
 		<Tooltip.Root>
 			{#snippet children(ctx)}
-				<Tooltip.Header>Sample {ctx?.data.index}</Tooltip.Header>
+				<Tooltip.Header
+					>{format(new Date(ctx?.data.timestamp), 'eee, MMM do, hh:mm:ss')}</Tooltip.Header
+				>
 				<Tooltip.List>
-					<Tooltip.Item label="value" value={`${ctx?.data.pressure.toFixed(3)} hPa`} />
+					<Tooltip.Item label="pressure" value={`${ctx?.data.pressure.toFixed(3)} hPa`} />
 				</Tooltip.List>
 			{/snippet}
 		</Tooltip.Root>
