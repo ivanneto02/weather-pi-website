@@ -6,6 +6,7 @@ export const meanAirQualityData = (data: Array<any>) => {
         count_10: 0,
         count_25: 0,
         count_50: 0,
+        count_100: 0,
         "PM1.0_1": 0,
         "PM2.5_1": 0,
         "PM10_1": 0,

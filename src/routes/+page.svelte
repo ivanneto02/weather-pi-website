@@ -4,6 +4,7 @@
 	import HumChart from '$lib/components/HumChart.svelte';
 	import AirQualityChart from '$lib/components/AirQualityChart.svelte';
 	import ThreeLinesChart from '$lib/components/ThreeLinesChart.svelte';
+	import AirQualityParticlesChart from '$lib/components/AirQualityParticlesChart.svelte';
 
 	import { onMount } from 'svelte';
 	import { getCurrentDateString } from '$lib/date/getCurrentDateString.ts';
@@ -11,6 +12,8 @@
 	import { meanTmpHumPreData } from '$lib/processing/meanTmpHumPreData';
 
 	let tmpHumPreData: Array<any> | null = null;
+
+	let airQualityData: Array<any> | null = null;
 
 	// temperature, humidity, pressure data
 	let tmp: number | null = null;
@@ -23,6 +26,7 @@
 	let count_10: number | null = null;
 	let count_25: number | null = null;
 	let count_50: number | null = null;
+	let count_100: number | null = null;
 
 	// harmful particles
 	let PM1_0_1: number | null = null;
@@ -49,12 +53,14 @@
 			})
 			.then((response) => {
 				// UPDATE UI
+				airQualityData = response;
 				let processed_response = meanAirQualityData(response);
 				count_03 = processed_response.count_03.toFixed(2);
 				count_05 = processed_response.count_05.toFixed(2);
 				count_10 = processed_response.count_10.toFixed(2);
 				count_25 = processed_response.count_25.toFixed(2);
 				count_50 = processed_response.count_50.toFixed(2);
+				count_100 = processed_response.count_100.toFixed(2);
 			});
 	}
 
@@ -74,7 +80,7 @@
 			.then((response) => {
 				// UPDATE UI, only last 5 minutes mean
 				tmpHumPreData = response;
-				let processedTmpHumPreData = meanTmpHumPreData(response.slice(0, 100));
+				let processedTmpHumPreData = meanTmpHumPreData(response.slice(0, 10));
 				tmp = processedTmpHumPreData.temperature;
 				hum = processedTmpHumPreData.humidity;
 				pre = processedTmpHumPreData.pressure;
@@ -149,6 +155,11 @@
 	<div class="flex flex-row gap-1">
 		<AirQualityChart reading={count_50} title={'5.0 µm³ count per 0.1L'} />
 	</div>
+	<div class="flex flex-row gap-1">
+		<AirQualityChart reading={count_100} title={'10.0 µm³ count per 0.1L'} />
+	</div>
 </div>
+
+<AirQualityParticlesChart data={airQualityData} />
 
 <div>Future: will contain counts for heavy metal particles, contaminants, etc.</div>
