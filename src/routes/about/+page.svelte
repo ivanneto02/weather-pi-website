@@ -1,4 +1,6 @@
-<h1>About the WeatherPI Data Viewer</h1>
+<h1>About WeatherPI</h1>
+
+<br />
 
 <p>
 	This website is used to visualize the data gathered by BME280 3.3V High Precision (pressure,
@@ -18,7 +20,7 @@
 <p>
 	With the increase of forest fires in the area, it is imperative to create end-to-end pipelines to
 	monitor harmful particle concentrations in the air. During a series of fires in 2024, air quality
-	was extremely impact, and several cities were forced to close schools and facilities.
+	was extremely impacted, and several cities were forced to close schools and facilities.
 </p>
 
 <p>
