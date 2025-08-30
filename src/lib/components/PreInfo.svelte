@@ -8,7 +8,7 @@
 		<li>Period: 3s</li>
 		<li>Average: last 10 samples</li>
 		<li>Location: Riverside, CA</li>
-		<li>Device: Raspberry Pi 1 2012.11</li>
+		<li>Device: Raspberry Pi 1 2011.12</li>
 	</ul>
 
 	<p>

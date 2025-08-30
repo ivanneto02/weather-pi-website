@@ -8,7 +8,7 @@
 		<li>Period: 3s</li>
 		<li>Average: last 10 samples</li>
 		<li>Location: Riverside, CA</li>
-		<li>Device: Raspberry Pi 1 2012.11</li>
+		<li>Device: Raspberry Pi 1 2011.12</li>
 	</ul>
 	<p>
 		Humidity is gathered every 3 seconds, averaging the last 10 samples (30 seconds) to quickly
