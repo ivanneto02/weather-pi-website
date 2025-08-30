@@ -2,7 +2,6 @@
 	import { Svg, Axis, Spline, Chart, Highlight, Legend } from 'layerchart';
 	import { scaleLinear, scaleOrdinal, scaleTime } from 'd3-scale';
 	import { curveBumpX } from 'd3-shape';
-	import { format } from 'date-fns';
 
 	type Row = {
 		timestamp: string;

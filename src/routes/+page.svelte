@@ -1,15 +1,14 @@
 <script lang="ts">
-	import TempChart from '$lib/components/TempChart.svelte';
-	import PreChart from '$lib/components/PreChart.svelte';
-	import HumChart from '$lib/components/HumChart.svelte';
 	import AirQualityChart from '$lib/components/AirQualityChart.svelte';
 	import ThreeLinesChart from '$lib/components/ThreeLinesChart.svelte';
 	import AirQualityParticlesChart from '$lib/components/AirQualityParticlesChart.svelte';
+	import TmpHumPreAndReadingChart from '$lib/components/TmpHumPreAndReadingChart.svelte';
 
 	import { onMount } from 'svelte';
 	import { getCurrentDateString } from '$lib/date/getCurrentDateString.ts';
 	import { meanAirQualityData } from '$lib/processing/meanAirQualityData.ts';
 	import { meanTmpHumPreData } from '$lib/processing/meanTmpHumPreData';
+	import { on } from 'svelte/events';
 
 	let tmpHumPreData: Array<any> | null = null;
 
@@ -112,11 +111,7 @@
 
 <h3>Mean values in the last 10 minutes:</h3>
 
-<div class="flex flex-row gap-1 mb-1">
-	<TempChart reading={tmp} />
-	<HumChart reading={hum} />
-	<PreChart reading={pre} />
-</div>
+<TmpHumPreAndReadingChart {tmp} {hum} {pre} />
 
 <ThreeLinesChart data={tmpHumPreData} />
 
