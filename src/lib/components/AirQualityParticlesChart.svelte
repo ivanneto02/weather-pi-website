@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Svg, Axis, Spline, Chart, Highlight, Legend } from 'layerchart';
-	import { scaleLinear, scaleOrdinal, scaleTime } from 'd3-scale';
+	import { scaleLinear, scaleOrdinal, scaleTime, scalePow } from 'd3-scale';
 	import { curveBumpX } from 'd3-shape';
 
 	type Row = {
@@ -59,10 +59,10 @@
 	<Chart
 		data={dataSeries}
 		x={(d) => new Date(d.timestamp)}
-		y={(d) => d.count_03.toFixed(2)}
+		y="count_03"
 		{xScale}
-		yDomain={[0, null]}
 		{yScale}
+		yDomain={[0, null]}
 		padding={{ left: 60, bottom: 34, top: 16, right: 16 }}
 		yNice
 	>
