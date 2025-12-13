@@ -2,7 +2,6 @@
 	import { Svg, Axis, Spline, Chart, Highlight, Legend } from 'layerchart';
 	import { scaleLinear, scaleOrdinal, scaleTime } from 'd3-scale';
 	import { curveBumpX } from 'd3-shape';
-	import ChartAndSelector from './ChartAndSelector.svelte';
 
 	type Row = {
 		timestamp: string;
@@ -33,8 +32,8 @@
 	const yScale = scaleLinear();
 </script>
 
-<ChartAndSelector title="Particle Count Over Time" let:selectedWindow>
-	<div class="h-[25px] p-4 rounded bg-black" data-window={selectedWindow}>
+<div title="Particle Count Over Time">
+	<div class="h-[25px] p-4 rounded bg-black">
 		<Chart
 			data={[{ name: '0.30 µm³' }, { name: '0.50 µm³' }, { name: '1.00 µm³' }]}
 			c="name"
@@ -44,7 +43,7 @@
 			<Legend class="text-xs" placement="top" variant="swatches" />
 		</Chart>
 	</div>
-	<div class="h-[25px] p-4 rounded bg-black" data-window={selectedWindow}>
+	<div class="h-[25px] p-4 rounded bg-black">
 		<Chart
 			data={[{ name: '2.50 µm³' }, { name: '5.00 µm³' }, { name: '10.0 µm³' }]}
 			c="name"
@@ -55,7 +54,7 @@
 		</Chart>
 	</div>
 
-	<div class="h-[500px] p-4 rounded bg-black" data-window={selectedWindow}>
+	<div class="h-[500px] p-4 rounded bg-black">
 		<Chart
 			data={dataSeries}
 			x={(d) => new Date(d.timestamp)}
@@ -91,4 +90,4 @@
 			</Svg>
 		</Chart>
 	</div>
-</ChartAndSelector>
+</div>
