@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
 	import TimeWindowSelectorItem from './TimeWindowSelectorItem.svelte';
 
 	type WindowOption = { label: string; value: string };
@@ -12,10 +13,16 @@
 		{ label: '12M', value: '12m' }
 	];
 
-	let selectedWindow = windows[0].value;
+	let { selectedValue = windows[0].value } = $props();
+
+	const dispatch = createEventDispatcher<{ select: string }>();
 
 	function handleSelect(event: CustomEvent<string>) {
-		selectedWindow = event.detail;
+		const next = event.detail;
+		if (next === selectedValue) return;
+
+		selectedValue = next;
+		dispatch('select', selectedValue);
 	}
 </script>
 
@@ -24,7 +31,7 @@
 		<TimeWindowSelectorItem
 			label={window.label}
 			value={window.value}
-			selected={window.value === selectedWindow}
+			selected={window.value === selectedValue}
 			on:select={handleSelect}
 		/>
 	{/each}
