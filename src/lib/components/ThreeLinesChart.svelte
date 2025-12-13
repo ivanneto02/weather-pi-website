@@ -35,6 +35,8 @@
 	measurement="temperature"
 	title="Temperature"
 	initialWindow="1h"
+	endpoint="/api/samples/latest"
+	samples={20}
 	bottom_axis_label="time"
 	left_axis_label="Temperature (C)"
 	spline_stroke_color="stroke-purple-700"
@@ -50,6 +52,8 @@
 	measurement="humidity"
 	title="Relative Humidity"
 	initialWindow="1h"
+	endpoint="/api/samples/latest"
+	samples={20}
 	bottom_axis_label="time"
 	left_axis_label="Humidity"
 	spline_stroke_color="stroke-red-500"
@@ -65,6 +69,8 @@
 	measurement="pressure"
 	title="Pressure"
 	initialWindow="1h"
+	endpoint="/api/samples/latest"
+	samples={20}
 	bottom_axis_label="time"
 	left_axis_label="Pressure (hPa)"
 	spline_stroke_color="stroke-blue-500"
