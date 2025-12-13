@@ -2,6 +2,7 @@
 	import { Svg, Axis, Spline, Chart, Highlight, Legend } from 'layerchart';
 	import { scaleLinear, scaleOrdinal, scaleTime } from 'd3-scale';
 	import { curveBumpX } from 'd3-shape';
+	import TimeWindowSelector from './TimeWindowSelector.svelte';
 
 	type Row = {
 		timestamp: string;
@@ -91,3 +92,5 @@
 		</Svg>
 	</Chart>
 </div>
+
+<TimeWindowSelector />

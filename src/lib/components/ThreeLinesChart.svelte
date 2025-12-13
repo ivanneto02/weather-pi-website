@@ -1,4 +1,5 @@
 <script lang="ts">
+	import TimeWindowSelector from './TimeWindowSelector.svelte';
 	import { Svg, Axis, Spline, Chart, Highlight, Labels, Tooltip } from 'layerchart';
 	import { scaleLinear, scaleTime } from 'd3-scale';
 	import { curveBumpX } from 'd3-shape';
@@ -78,6 +79,8 @@
 	</Chart>
 </div>
 
+<TimeWindowSelector />
+
 <h2 class="text-center">Humidity</h2>
 
 <div class="h-[250px] p-4 rounded bg-black">
@@ -126,6 +129,8 @@
 	</Chart>
 </div>
 
+<TimeWindowSelector />
+
 <h2 class="text-center">Pressure</h2>
 
 <div class="h-[250px] p-4 rounded bg-black">
@@ -173,3 +178,5 @@
 		</Tooltip.Root>
 	</Chart>
 </div>
+
+<TimeWindowSelector />
