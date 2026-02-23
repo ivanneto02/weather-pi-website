@@ -1,6 +1,7 @@
 export const fetchTmpHumPreData = () => {
+    const url = "https://93xdazuw09.execute-api.us-west-1.amazonaws.com/prod/samples?window=1h&samples=600";
     let response = fetch(
-        "https://93xdazuw09.execute-api.us-west-1.amazonaws.com/prod/samples",
+        url,
         {
             method: "GET",
             headers: {
@@ -16,4 +17,3 @@ export const fetchTmpHumPreData = () => {
 
     });
 }
-

@@ -1,6 +1,8 @@
 <script lang="ts">
 	import AirQualityChart from '$lib/components/AirQualityChart.svelte';
-	import ThreeLinesChart from '$lib/components/ThreeLinesChart.svelte';
+	import TemperatureLineChart from '$lib/components/TemperatureLineChart.svelte';
+	import HumidityLineChart from '$lib/components/HumidityLineChart.svelte';
+	import PressureLineChart from '$lib/components/PressureLineChart.svelte';
 	import AirQualityParticlesChart from '$lib/components/AirQualityParticlesChart.svelte';
 	import TmpHumPreAndReadingChart from '$lib/components/TmpHumPreAndReadingChart.svelte';
 
@@ -10,8 +12,6 @@
 	import { meanTmpHumPreData } from '$lib/processing/meanTmpHumPreData';
 	import { on } from 'svelte/events';
 	import { HTP_ENDPOINT, AQ_ENDPOINT } from '$lib/config/endpoints';
-
-	let tmpHumPreData: Array<any> | null = null;
 
 	let airQualityData: Array<any> | null = null;
 
@@ -37,6 +37,8 @@
 	let PM10_2: number | null = null;
 
 	let dt = getCurrentDateString();
+	let showHumidityChart = false;
+	let showPressureChart = false;
 
 	async function fetchAirQualityData() {
 		let response = fetch(AQ_ENDPOINT, {
@@ -65,7 +67,8 @@
 	}
 
 	async function fetchTmpHumPreData() {
-		let response = fetch(HTP_ENDPOINT, {
+		const url = `${HTP_ENDPOINT}?window=1h&samples=10`;
+		let response = fetch(url, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json'
@@ -79,7 +82,6 @@
 			})
 			.then((response) => {
 				// UPDATE UI, only last 5 minutes mean
-				tmpHumPreData = response;
 				let processedTmpHumPreData = meanTmpHumPreData(response.slice(0, 10));
 				tmp = processedTmpHumPreData.temperature;
 				hum = processedTmpHumPreData.humidity;
@@ -115,7 +117,9 @@
 			<span class="status-dot"></span>
 			<span>Live</span>
 			<span class="hero__time">
-				{dt.dayName}, {dt.month} {dt.day}, {dt.year} · {dt.thour}:{dt.minute}:{dt.second} {dt.ampm}
+				{dt.dayName}, {dt.month}
+				{dt.day}, {dt.year} · {dt.thour}:{dt.minute}:{dt.second}
+				{dt.ampm}
 			</span>
 		</div>
 	</div>
@@ -129,11 +133,22 @@
 </section>
 
 <section class="chart-block">
-	<div class="chart-block__header">
-		<h3>Last samples</h3>
-		<p class="chart-block__hint">Raw sensor traces for temperature, humidity, and pressure.</p>
-	</div>
-	<ThreeLinesChart data={tmpHumPreData} />
+	<div class="chart-block__header"></div>
+	<TemperatureLineChart
+		on:ready={() => {
+			showHumidityChart = true;
+		}}
+	/>
+	{#if showHumidityChart}
+		<HumidityLineChart
+			on:ready={() => {
+				showPressureChart = true;
+			}}
+		/>
+	{/if}
+	{#if showPressureChart}
+		<PressureLineChart />
+	{/if}
 </section>
 
 <section class="flex flex-col gap-4">
@@ -349,7 +364,9 @@
 		flex-shrink: 0;
 		border-radius: 9999px;
 		background: #22c55e;
-		box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.16), 0 0 10px rgba(34, 197, 94, 0.45);
+		box-shadow:
+			0 0 0 4px rgba(34, 197, 94, 0.16),
+			0 0 10px rgba(34, 197, 94, 0.45);
 		animation: livePulse 2.8s ease-in-out infinite;
 	}
 
@@ -357,11 +374,15 @@
 		0%,
 		100% {
 			background: #166534;
-			box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.14), 0 0 8px rgba(34, 197, 94, 0.35);
+			box-shadow:
+				0 0 0 4px rgba(34, 197, 94, 0.14),
+				0 0 8px rgba(34, 197, 94, 0.35);
 		}
 		50% {
 			background: #22c55e;
-			box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.16), 0 0 10px rgba(34, 197, 94, 0.45);
+			box-shadow:
+				0 0 0 4px rgba(34, 197, 94, 0.16),
+				0 0 10px rgba(34, 197, 94, 0.45);
 		}
 	}
 

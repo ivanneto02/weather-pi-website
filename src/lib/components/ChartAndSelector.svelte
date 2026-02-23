@@ -1,10 +1,19 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
+	import { onMount } from 'svelte';
 	import TimeWindowSelector from './TimeWindowSelector.svelte';
 
 	import { Chart, Svg, Axis, Spline, Highlight, Tooltip } from 'layerchart';
 	import { format } from 'date-fns';
 	import { curveBumpX } from 'd3-shape';
+
+	type SeriesRow = Record<string, number>;
+	type SeriesData = SeriesRow[];
+	type SharedCacheEntry = { data: SeriesData; cachedAt: number };
+
+	// Shared across all ChartAndSelector instances to avoid duplicate fetch+parse work.
+	const sharedCache = new Map<string, SharedCacheEntry>();
+	const inFlightRequests = new Map<string, Promise<SeriesData>>();
 
 	let {
 		dataSeries = [],
@@ -23,7 +32,7 @@
 		endpoint = '/api/samples/latest'
 	} = $props();
 
-	const dispatch = createEventDispatcher<{ select: string }>();
+	const dispatch = createEventDispatcher<{ select: string; ready: void }>();
 
 	// Cache TTLs matching cron frequencies (in ms)
 	const CACHE_TTL: Record<string, number> = {
@@ -35,25 +44,56 @@
 		'12m': 12 * 3_600_000
 	};
 
-	const cache = new Map<string, { data: typeof dataSeries; cachedAt: number }>();
-
 	let selectedWindow = $state(initialWindow);
 	let fetchedData = $state<typeof dataSeries | null>(null);
 	let chartData = $derived(fetchedData ?? dataSeries);
+	let hasEmittedReady = $state(false);
+	let isLoading = $state((dataSeries?.length ?? 0) === 0);
+	let chartRenderKey = $state(0);
+	let completedRenderCount = $state(0);
+	const measurementKey = $derived(
+		measurement === 'temperature' || measurement === 'humidity' || measurement === 'pressure'
+			? measurement
+			: ''
+	);
+
+	$effect(() => {
+		if (!hasEmittedReady && chartData.length > 0) {
+			hasEmittedReady = true;
+			dispatch('ready');
+		}
+	});
 
 	async function fetchWindow(windowValue: string) {
-		const cacheKey = `${endpoint}|${windowValue}`;
+		const cacheKey = `${endpoint}|${windowValue}|${samples}|${measurementKey || 'all'}`;
 		const ttl = CACHE_TTL[windowValue] ?? 0;
-		const cached = cache.get(cacheKey);
+		const cached = sharedCache.get(cacheKey);
+		isLoading = true;
+		fetchedData = [];
 
 		if (cached && ttl > 0 && Date.now() - cached.cachedAt < ttl) {
 			fetchedData = cached.data;
+			isLoading = false;
 			return;
 		}
 
-		const url = `${endpoint}?window=${windowValue}&samples=${samples}`;
+		const existingRequest = inFlightRequests.get(cacheKey);
+		if (existingRequest) {
+			fetchedData = await existingRequest;
+			isLoading = false;
+			return;
+		}
 
-		try {
+		const params = new URLSearchParams({
+			window: windowValue,
+			samples: String(samples)
+		});
+		if (measurementKey) {
+			params.set('measurement', measurementKey);
+		}
+		const url = `${endpoint}?${params.toString()}`;
+
+		const requestPromise = (async () => {
 			const response = await fetch(url);
 			if (!response.ok) {
 				throw new Error(`Request failed with status ${response.status}`);
@@ -61,7 +101,7 @@
 			const payload = await response.json();
 			const raw = Array.isArray(payload) ? payload : payload?.data ?? stubData(windowValue);
 			// DynamoDB returns string values — coerce to numbers for the chart
-			fetchedData = raw.map((row: Record<string, unknown>, i: number) => {
+			const normalized = raw.map((row: Record<string, unknown>, i: number) => {
 				const coerced: Record<string, number> = { index: i };
 				for (const [key, val] of Object.entries(row)) {
 					if (key === 'pk') continue;
@@ -71,10 +111,22 @@
 			});
 
 			if (ttl > 0) {
-				cache.set(cacheKey, { data: fetchedData, cachedAt: Date.now() });
+				sharedCache.set(cacheKey, { data: normalized, cachedAt: Date.now() });
 			}
+			return normalized;
+		})();
+
+		inFlightRequests.set(cacheKey, requestPromise);
+
+		try {
+			fetchedData = await requestPromise;
 		} catch (error) {
 			fetchedData = stubData(windowValue);
+		} finally {
+			inFlightRequests.delete(cacheKey);
+			chartRenderKey += 1;
+			completedRenderCount += 1;
+			isLoading = false;
 		}
 	}
 
@@ -83,6 +135,10 @@
 		dispatch('select', selectedWindow);
 		fetchWindow(selectedWindow);
 	}
+
+	onMount(() => {
+		void fetchWindow(selectedWindow);
+	});
 
 	const formatValue = (value: number) => value?.toFixed(tooltip_label_round);
 
@@ -116,51 +172,64 @@
 	<slot {selectedWindow} />
 
 	<div class="h-[250px] p-4 rounded bg-black border border-white/5" data-window={selectedWindow}>
-		<Chart
-			data={chartData}
-			x={(d) => new Date(d.timestamp)}
-			y={(d) => (d?.[measurement] ?? 0).toFixed(tooltip_label_round)}
-			{xScale}
-			{yScale}
-			padding={{ left: 60, bottom: 34, top: 16, right: 16 }}
-			yNice
-			tooltip={{ mode: 'voronoi' }}
-		>
-			<Svg>
-				<Axis
-					placement="left"
-					tickLabelProps={{ class: 'text-sm text-blue' }}
-					grid
-					rule
-					label={left_axis_label}
-				/>
-				<Axis
-					labelProps={{ class: 'text-sm text-blue' }}
-					placement="bottom"
-					rule
-					class="text-white stroke-blue-200"
-					label={bottom_axis_label}
-				/>
-				<Spline class={`${spline_stroke_color} stroke-2`} curve={curveBumpX} draw />
-				<Highlight points lines />
-			</Svg>
-
-			<!-- Differs from the docs, using a snippet instead to pass in 
-        children and avoid invalid_default_snippet runtime error -->
-			<Tooltip.Root>
-				{#snippet children(ctx)}
-					<Tooltip.Header
-						>{format(new Date(ctx?.data.timestamp), 'eee, MMM do, hh:mm:ss')}</Tooltip.Header
-					>
-					<Tooltip.List>
-						<Tooltip.Item
-							label={tooltip_label_name}
-							value={`${formatValue(ctx?.data?.[measurement])} ${tooltip_label_units}`}
+		{#if isLoading}
+			<div class="flex h-full w-full flex-col items-center justify-center gap-2 text-slate-300">
+				<span class="h-7 w-7 animate-spin rounded-full border-2 border-slate-500 border-t-emerald-400"></span>
+				<span class="text-sm">Loading graph...</span>
+			</div>
+		{:else}
+			{#key chartRenderKey}
+				<Chart
+					data={chartData}
+					x={(d) => new Date(d.timestamp)}
+					y={(d) => Number(d?.[measurement] ?? 0)}
+					{xScale}
+					{yScale}
+					padding={{ left: 60, bottom: 34, top: 16, right: 16 }}
+					yNice
+					tooltip={{ mode: 'voronoi' }}
+				>
+					<Svg>
+						<Axis
+							placement="left"
+							tickLabelProps={{ class: 'text-sm text-blue' }}
+							grid
+							rule
+							label={left_axis_label}
 						/>
-					</Tooltip.List>
-				{/snippet}
-			</Tooltip.Root>
-		</Chart>
+						<Axis
+							labelProps={{ class: 'text-sm text-blue' }}
+							placement="bottom"
+							rule
+							class="text-white stroke-blue-200"
+							label={bottom_axis_label}
+						/>
+						<Spline
+							class={`${spline_stroke_color} stroke-2`}
+							curve={curveBumpX}
+							draw={completedRenderCount > 1 ? { duration: 1100 } : false}
+						/>
+						<Highlight lines />
+					</Svg>
+
+					<!-- Differs from the docs, using a snippet instead to pass in 
+        children and avoid invalid_default_snippet runtime error -->
+					<Tooltip.Root>
+						{#snippet children(ctx)}
+							<Tooltip.Header
+								>{format(new Date(ctx?.data.timestamp), 'eee, MMM do, hh:mm:ss')}</Tooltip.Header
+							>
+							<Tooltip.List>
+								<Tooltip.Item
+									label={tooltip_label_name}
+									value={`${formatValue(ctx?.data?.[measurement])} ${tooltip_label_units}`}
+								/>
+							</Tooltip.List>
+						{/snippet}
+					</Tooltip.Root>
+				</Chart>
+			{/key}
+		{/if}
 	</div>
 
 	<TimeWindowSelector selectedValue={selectedWindow} on:select={handleSelect} />

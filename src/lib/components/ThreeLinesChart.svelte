@@ -13,17 +13,21 @@
 		pressure: number;
 	};
 
-	export let data: Row[] = [];
+	let { data = [] }: { data: Row[] } = $props();
+	let showHumidity = $state(false);
+	let showPressure = $state(false);
 
-	$: dataSeries = data
-		? data.map((row, i) => ({
-				index: i,
-				timestamp: +row.timestamp,
-				temperature: +row.temperature,
-				humidity: +row.humidity,
-				pressure: +row.pressure
-			}))
-		: [];
+	const dataSeries = $derived(
+		data
+			? data.map((row, i) => ({
+					index: i,
+					timestamp: +row.timestamp,
+					temperature: +row.temperature,
+					humidity: +row.humidity,
+					pressure: +row.pressure
+				}))
+			: []
+	);
 
 	const xScale = scaleTime();
 	const yScale = scaleLinear();
@@ -44,38 +48,48 @@
 	tooltip_label_name="Temperature"
 	tooltip_label_units="C"
 	tooltip_label_round={2}
+	on:ready={() => {
+		showHumidity = true;
+	}}
 />
 
-<ChartAndSelector
-	{dataSeries}
-	{xScale}
-	{yScale}
-	measurement="humidity"
-	title="Relative Humidity"
-	initialWindow="1h"
-	endpoint={HTP_ENDPOINT}
-	samples={600}
-	bottom_axis_label="time"
-	left_axis_label="Humidity"
-	spline_stroke_color="stroke-red-500"
-	tooltip_label_name="Relative Humidity"
-	tooltip_label_units="(%)"
-	tooltip_label_round={2}
-/>
+{#if showHumidity}
+	<ChartAndSelector
+		{dataSeries}
+		{xScale}
+		{yScale}
+		measurement="humidity"
+		title="Relative Humidity"
+		initialWindow="1h"
+		endpoint={HTP_ENDPOINT}
+		samples={600}
+		bottom_axis_label="time"
+		left_axis_label="Humidity"
+		spline_stroke_color="stroke-red-500"
+		tooltip_label_name="Relative Humidity"
+		tooltip_label_units="(%)"
+		tooltip_label_round={2}
+		on:ready={() => {
+			showPressure = true;
+		}}
+	/>
+{/if}
 
-<ChartAndSelector
-	{dataSeries}
-	{xScale}
-	{yScale}
-	measurement="pressure"
-	title="Pressure"
-	initialWindow="1h"
-	endpoint={HTP_ENDPOINT}
-	samples={600}
-	bottom_axis_label="time"
-	left_axis_label="Pressure (hPa)"
-	spline_stroke_color="stroke-blue-500"
-	tooltip_label_name="Pressure"
-	tooltip_label_units="hPa"
-	tooltip_label_round={2}
-/>
+{#if showPressure}
+	<ChartAndSelector
+		{dataSeries}
+		{xScale}
+		{yScale}
+		measurement="pressure"
+		title="Pressure"
+		initialWindow="1h"
+		endpoint={HTP_ENDPOINT}
+		samples={600}
+		bottom_axis_label="time"
+		left_axis_label="Pressure (hPa)"
+		spline_stroke_color="stroke-blue-500"
+		tooltip_label_name="Pressure"
+		tooltip_label_units="hPa"
+		tooltip_label_round={2}
+	/>
+{/if}
