@@ -37,7 +37,7 @@
 	title="Temperature"
 	initialWindow="1h"
 	endpoint={HTP_ENDPOINT}
-	samples={20}
+	samples={600}
 	bottom_axis_label="time"
 	left_axis_label="Temperature (C)"
 	spline_stroke_color="stroke-purple-700"
@@ -54,7 +54,7 @@
 	title="Relative Humidity"
 	initialWindow="1h"
 	endpoint={HTP_ENDPOINT}
-	samples={20}
+	samples={600}
 	bottom_axis_label="time"
 	left_axis_label="Humidity"
 	spline_stroke_color="stroke-red-500"
@@ -71,7 +71,7 @@
 	title="Pressure"
 	initialWindow="1h"
 	endpoint={HTP_ENDPOINT}
-	samples={20}
+	samples={600}
 	bottom_axis_label="time"
 	left_axis_label="Pressure (hPa)"
 	spline_stroke_color="stroke-blue-500"

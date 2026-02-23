@@ -19,17 +19,38 @@
 		tooltip_label_name = 'none',
 		tooltip_label_units = 'hPa',
 		tooltip_label_round = 1,
-		samples = 20,
+		samples = 600,
 		endpoint = '/api/samples/latest'
 	} = $props();
 
 	const dispatch = createEventDispatcher<{ select: string }>();
+
+	// Cache TTLs matching cron frequencies (in ms)
+	const CACHE_TTL: Record<string, number> = {
+		'1h': 5 * 60_000,
+		'10h': 10 * 60_000,
+		'1d': 30 * 60_000,
+		'10d': 2 * 3_600_000,
+		'3m': 6 * 3_600_000,
+		'12m': 12 * 3_600_000
+	};
+
+	const cache = new Map<string, { data: typeof dataSeries; cachedAt: number }>();
 
 	let selectedWindow = $state(initialWindow);
 	let fetchedData = $state<typeof dataSeries | null>(null);
 	let chartData = $derived(fetchedData ?? dataSeries);
 
 	async function fetchWindow(windowValue: string) {
+		const cacheKey = `${endpoint}|${windowValue}`;
+		const ttl = CACHE_TTL[windowValue] ?? 0;
+		const cached = cache.get(cacheKey);
+
+		if (cached && ttl > 0 && Date.now() - cached.cachedAt < ttl) {
+			fetchedData = cached.data;
+			return;
+		}
+
 		const url = `${endpoint}?window=${windowValue}&samples=${samples}`;
 
 		try {
@@ -48,6 +69,10 @@
 				}
 				return coerced;
 			});
+
+			if (ttl > 0) {
+				cache.set(cacheKey, { data: fetchedData, cachedAt: Date.now() });
+			}
 		} catch (error) {
 			fetchedData = stubData(windowValue);
 		}
