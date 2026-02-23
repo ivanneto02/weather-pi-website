@@ -41,7 +41,8 @@ export class WeatherPIDataStack extends cdk.Stack {
             {
                 code: lambda.Code.fromAsset("lib/functions/humidityTemperaturePressureDownloadFunction"),
                 runtime: lambda.Runtime.NODEJS_LATEST,
-                handler: "index.handler"
+                handler: "index.handler",
+                timeout: cdk.Duration.seconds(15),
             }
         );
 
@@ -84,14 +85,15 @@ export class WeatherPIDataStack extends cdk.Stack {
             }
         );
 
-        // lambda function to batch add data entries
+        // lambda function to batch download data entries
         const airQualityDownloadFunction: lambda.Function = new lambda.Function(
             this,
             "WeatherPIAirQualityDownloadFunction",
             {
                 code: lambda.Code.fromAsset("lib/functions/airQualityDownloadFunction"),
                 runtime: lambda.Runtime.NODEJS_LATEST,
-                handler: "index.handler"
+                handler: "index.handler",
+                timeout: cdk.Duration.seconds(15),
             }
         );
 
