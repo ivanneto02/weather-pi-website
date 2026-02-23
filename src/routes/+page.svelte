@@ -203,8 +203,6 @@
 
 <!-- <AirQualityParticlesChart data={airQualityData} /> -->
 
-<div>Future: will contain counts for heavy metal particles, contaminants, etc.</div>
-
 <style>
 	.legend-card {
 		display: grid;
