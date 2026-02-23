@@ -2,9 +2,11 @@
     let { children, title } = $props();
 </script>
 
-<div>
-    <h2 class="mb-2">{title ? title : "No title"}</h2>
-    <div class="flex flex-col items-left pl-[10%] gap-1">
-        {@render children?.()}
+<div class="mx-auto w-full max-w-sm">
+    <div class="mx-auto w-fit">
+        <h2 class="mb-3 text-left">{title ? title : "No title"}</h2>
+        <div class="flex w-fit flex-col items-start gap-1.5 text-left">
+            {@render children?.()}
+        </div>
     </div>
 </div>

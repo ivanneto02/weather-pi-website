@@ -3,7 +3,7 @@
     import FooterSection from "$lib/components/FooterSection.svelte";
 </script>
 
-<div class="h-auto bg-inherit flex gap-5 pb-10 flex-col text-center border-solid border-indigo-900 border-t-2">
+<div class="mt-20 grid h-auto grid-cols-1 gap-8 border-t-2 border-solid border-indigo-900 pb-10 pt-6 text-center md:grid-cols-3">
     <FooterSection title="Contact Information">
         <FooterLink icon={"mdi:email"} text={"ivanbatallon1@gmail.com"} to={"mailto:ivanbatallon1@gmail.com"} />
         <FooterLink icon={"mdi:graduation-cap"} text={"University of California, Riverside"} to={"https://www.ucr.edu/"}/>
