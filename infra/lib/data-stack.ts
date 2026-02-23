@@ -51,7 +51,10 @@ export class WeatherPIDataStack extends cdk.Stack {
             {
                 code: lambda.Code.fromAsset("lib/functions/humidityTemperaturePressureUploadFunction"),
                 runtime: lambda.Runtime.NODEJS_LATEST,
-                handler: "index.handler"
+                handler: "index.handler",
+                environment: {
+                    TABLE_NAME: humidityTemperaturePressureDataTable.tableName,
+                },
             }
         );
 
@@ -91,8 +94,8 @@ export class WeatherPIDataStack extends cdk.Stack {
             code: lambda.Code.fromAsset("lib/functions/htpCronFunction"),
             runtime: lambda.Runtime.NODEJS_LATEST,
             handler: "index.handler",
-            timeout: cdk.Duration.seconds(30),
-            memorySize: 256,
+            timeout: cdk.Duration.minutes(3),
+            memorySize: 1024,
             environment: {
                 TABLE_NAME: humidityTemperaturePressureDataTable.tableName,
                 BUCKET_NAME: precomputedBucket.bucketName,
@@ -136,7 +139,10 @@ export class WeatherPIDataStack extends cdk.Stack {
             {
                 code: lambda.Code.fromAsset("lib/functions/airQualityUploadFunction"),
                 runtime: lambda.Runtime.NODEJS_LATEST,
-                handler: "index.handler"
+                handler: "index.handler",
+                environment: {
+                    TABLE_NAME: airQualityDataTable.tableName,
+                },
             }
         );
 

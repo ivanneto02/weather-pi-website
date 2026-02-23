@@ -3,6 +3,6 @@
     let { children } = $props();
 </script>
 
-<div class="bg-inherit mb-auto pb-5 overflow-scroll">
+<div class="bg-inherit mb-auto pb-5">
     {@render children?.()}
 </div>
