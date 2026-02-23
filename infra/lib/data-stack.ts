@@ -65,6 +65,7 @@ export class WeatherPIDataStack extends cdk.Stack {
                 handler: "index.handler",
                 timeout: cdk.Duration.seconds(15),
                 environment: {
+                    TABLE_NAME: humidityTemperaturePressureDataTable.tableName,
                     BUCKET_NAME: precomputedBucket.bucketName,
                     S3_PREFIX: "htp",
                 },
