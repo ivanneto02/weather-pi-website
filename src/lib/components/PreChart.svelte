@@ -11,5 +11,5 @@
 		<h3>Pressure</h3>
 		<p>(Pa)</p>
 	</div>
-	<h1>{reading ? processTmpHumPreReading(reading) * 100 : (0.0).toFixed(2)}</h1>
+	<h1>{reading ? (Number(processTmpHumPreReading(reading)) * 100).toFixed(2) : (0.0).toFixed(2)}</h1>
 </StandardChart>

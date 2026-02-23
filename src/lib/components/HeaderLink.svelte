@@ -1,9 +1,10 @@
 <script lang="ts">
-	let { children, to, icon, text } = $props();
-    import Icon from "@iconify/svelte";
+	import Icon from '@iconify/svelte';
+
+	let { to = 'none', icon = '', text = '' }: { to?: string; icon?: string; text?: string } = $props();
 </script>
 
-<a class="flex items-center gap-1 cursor-pointer" href={to ? to : "none"}>
-    <Icon icon={icon}/>
-    {text}
+<a class="flex cursor-pointer items-center gap-1" href={to}>
+	<Icon icon={icon} />
+	{text}
 </a>

@@ -1,14 +1,15 @@
 <script lang="ts">
-	let { children, to, icon, text } = $props();
-    import Icon from "@iconify/svelte";
+	import Icon from '@iconify/svelte';
+
+	let { to = 'none', icon = '', text = '' }: { to?: string; icon?: string; text?: string } = $props();
 </script>
 
 <a
-	class="flex w-full items-center justify-start gap-1 text-left cursor-pointer"
-	href={to ? to : "none"}
+	class="flex w-full cursor-pointer items-center justify-start gap-1 text-left"
+	href={to}
 	target="_blank"
 	rel="noreferrer"
 >
-    <Icon icon={icon}/>
-    {text}
+	<Icon icon={icon} />
+	{text}
 </a>

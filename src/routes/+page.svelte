@@ -7,9 +7,8 @@
 	import TmpHumPreAndReadingChart from '$lib/components/TmpHumPreAndReadingChart.svelte';
 
 	import { onMount } from 'svelte';
-	import { getCurrentDateString } from '$lib/date/getCurrentDateString.ts';
-	import { meanAirQualityData } from '$lib/processing/meanAirQualityData.ts';
-	import { on } from 'svelte/events';
+	import { getCurrentDateString } from '$lib/date/getCurrentDateString';
+	import { meanAirQualityData } from '$lib/processing/meanAirQualityData';
 	import { HTP_ENDPOINT, AQ_ENDPOINT } from '$lib/config/endpoints';
 
 	let airQualityData: Array<any> | null = null;
@@ -20,12 +19,12 @@
 	let pre: number | null = null;
 
 	// particle count
-	let count_03: number | null = null;
-	let count_05: number | null = null;
-	let count_10: number | null = null;
-	let count_25: number | null = null;
-	let count_50: number | null = null;
-	let count_100: number | null = null;
+	let count_03: string | null = null;
+	let count_05: string | null = null;
+	let count_10: string | null = null;
+	let count_25: string | null = null;
+	let count_50: string | null = null;
+	let count_100: string | null = null;
 
 	// harmful particles
 	let PM1_0_1: number | null = null;

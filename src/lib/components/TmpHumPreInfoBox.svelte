@@ -1,7 +1,5 @@
 <script lang="ts">
-	let { children } = $props();
-
-	export let visible: boolean = true;
+	let { children, visible = true }: { children?: any; visible?: boolean } = $props();
 </script>
 
 <div class="invisible h-[0px]">
