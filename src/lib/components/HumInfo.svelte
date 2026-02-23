@@ -6,7 +6,7 @@
 			<li>Unit: Relative Humidity (%)</li>
 			<li>Protocol: I2C</li>
 			<li>Period: 3s</li>
-			<li>Average: last 10 samples</li>
+			<li>Displayed: latest sample</li>
 			<li>Location: Riverside, CA</li>
 			<li>Reference: Near UC Riverside (&lt; 1 mile)</li>
 			<li>Device: Raspberry Pi 1 2011.12</li>
@@ -15,8 +15,7 @@
 
 	<div class="flex h-full basis-3/5 min-w-0 flex-col justify-center pl-1 text-center">
 		<p class="mx-auto mt-1 max-w-prose">
-			Humidity is gathered every 3 seconds, averaging the last 10 samples (30 seconds) to quickly
-			display real-time data every 5 minutes.
+			Humidity is gathered every 3 seconds and the dashboard displays the latest available sample, refreshed every 5 minutes.
 		</p>
 
 		<p class="mx-auto mt-2 max-w-prose">

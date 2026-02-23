@@ -9,7 +9,6 @@
 	import { onMount } from 'svelte';
 	import { getCurrentDateString } from '$lib/date/getCurrentDateString.ts';
 	import { meanAirQualityData } from '$lib/processing/meanAirQualityData.ts';
-	import { meanTmpHumPreData } from '$lib/processing/meanTmpHumPreData';
 	import { on } from 'svelte/events';
 	import { HTP_ENDPOINT, AQ_ENDPOINT } from '$lib/config/endpoints';
 
@@ -39,6 +38,7 @@
 	let dt = getCurrentDateString();
 	let showHumidityChart = false;
 	let showPressureChart = false;
+	let latestSampleTimestamp: number | null = null;
 
 	async function fetchAirQualityData() {
 		let response = fetch(AQ_ENDPOINT, {
@@ -67,7 +67,7 @@
 	}
 
 	async function fetchTmpHumPreData() {
-		const url = `${HTP_ENDPOINT}?window=1h&samples=10`;
+		const url = `${HTP_ENDPOINT}?latest=1`;
 		let response = fetch(url, {
 			method: 'GET',
 			headers: {
@@ -81,11 +81,11 @@
 				return response.json();
 			})
 			.then((response) => {
-				// UPDATE UI, only last 5 minutes mean
-				let processedTmpHumPreData = meanTmpHumPreData(response.slice(0, 10));
-				tmp = processedTmpHumPreData.temperature;
-				hum = processedTmpHumPreData.humidity;
-				pre = processedTmpHumPreData.pressure;
+				const latest = Array.isArray(response) ? response[0] : null;
+				tmp = latest ? Number(latest.temperature) : null;
+				hum = latest ? Number(latest.humidity) : null;
+				pre = latest ? Number(latest.pressure) : null;
+				latestSampleTimestamp = latest ? Number(latest.timestamp) : null;
 			});
 	}
 
@@ -127,7 +127,11 @@
 
 <section class="mean-block">
 	<div class="mean-card__header">
-		<h3>10-minute means</h3>
+		<h3>Latest readings</h3>
+		<p class="mean-card__timestamp">
+			Latest sample:
+			{latestSampleTimestamp ? new Date(latestSampleTimestamp).toLocaleString() : 'loading...'}
+		</p>
 	</div>
 	<TmpHumPreAndReadingChart {tmp} {hum} {pre} />
 </section>
@@ -401,6 +405,14 @@
 		color: #e5e7eb;
 		font-weight: 600;
 		gap: 0.5rem;
+		flex-wrap: wrap;
+	}
+
+	.mean-card__timestamp {
+		margin: 0;
+		font-size: 0.85rem;
+		font-weight: 500;
+		color: #94a3b8;
 	}
 
 	.mean-block {
