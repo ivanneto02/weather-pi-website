@@ -116,46 +116,202 @@
 
 <ThreeLinesChart data={tmpHumPreData} />
 
-<h2>Air Quality</h2>
-
-<div class="mb-5">
-	<p class="text-red-600">key = calibration for indoors</p>
-	<p class="text-indigo-500">key = calibration for outdoors</p>
-</div>
-
-<div class="flex flex-col gap-1">
-	<div class="flex flex-row gap-1">
-		<AirQualityChart reading={count_03} title={'0.3 µm³ count per 0.1L'} />
-		<div class="flex flex-row gap-1">
-			<AirQualityChart color="text-red-600" reading={PM1_0_1} title={'PM1.0'} />
-			<AirQualityChart color="text-indigo-500" reading={PM1_0_2} title={'PM1.0'} />
-		</div>
-	</div>
-	<div class="flex flex-row gap-1">
-		<AirQualityChart reading={count_05} title={'0.5 µm³ count per 0.1L'} />
-		<div class="flex flex-row gap-1">
-			<AirQualityChart color="text-red-600" reading={PM2_5_1} title={'PM2.5'} />
-			<AirQualityChart color="text-indigo-500" reading={PM2_5_2} title={'PM2.5'} />
-		</div>
-	</div>
+<section class="flex flex-col gap-4">
 	<div class="flex flex-col gap-1">
-		<div class="flex flex-row gap-1">
-			<AirQualityChart color="text-red-600" reading={PM10_1} title={'PM10'} />
-			<AirQualityChart color="text-indigo-600" reading={PM10_2} title={'PM10'} />
+		<h2>Air Quality</h2>
+		<p class="text-sm text-gray-300">
+			Calibrations shown side-by-side for indoor vs outdoor tuning.
+		</p>
+	</div>
+
+	<div class="legend-card">
+		<div class="flex items-center gap-2">
+			<span class="legend-dot legend-dot--indoor"></span>
+			<span>Indoor calibration</span>
 		</div>
-		<AirQualityChart reading={count_10} title={'1.0 µm³ count per 0.1L'} />
+		<div class="flex items-center gap-2">
+			<span class="legend-dot legend-dot--outdoor"></span>
+			<span>Outdoor calibration</span>
+		</div>
 	</div>
-	<div class="flex flex-row gap-1">
-		<AirQualityChart reading={count_25} title={'2.5 µm³ count per 0.1L'} />
+
+	<div class="measurement-key">
+		<div class="key-item">
+			<span class="legend-dot legend-dot--count"></span>
+			<div>
+				<p class="key-title">Particle count (µm³ / 0.1L)</p>
+				<p class="key-desc">Number of particles of each size bucket per 0.1L of air.</p>
+			</div>
+		</div>
+		<div class="key-item">
+			<span class="legend-dot legend-dot--indoor"></span>
+			<div>
+				<p class="key-title">PM (indoor)</p>
+				<p class="key-desc">Mass concentration calibrated for indoor environments.</p>
+			</div>
+		</div>
+		<div class="key-item">
+			<span class="legend-dot legend-dot--outdoor"></span>
+			<div>
+				<p class="key-title">PM (outdoor)</p>
+				<p class="key-desc">Mass concentration calibrated for outdoor environments.</p>
+			</div>
+		</div>
 	</div>
-	<div class="flex flex-row gap-1">
-		<AirQualityChart reading={count_50} title={'5.0 µm³ count per 0.1L'} />
+
+	<div class="grid gap-4">
+		<div class="section-card">
+			<div class="section-header">
+				<h3>Particle Count</h3>
+				<span class="badge badge-count">counts / 0.1L</span>
+			</div>
+			<div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+				<AirQualityChart color="text-emerald-300" reading={count_03} title={'0.3 µm³'} />
+				<AirQualityChart color="text-emerald-300" reading={count_05} title={'0.5 µm³'} />
+				<AirQualityChart color="text-emerald-300" reading={count_10} title={'1.0 µm³'} />
+				<AirQualityChart color="text-emerald-300" reading={count_25} title={'2.5 µm³'} />
+				<AirQualityChart color="text-emerald-300" reading={count_50} title={'5.0 µm³'} />
+				<AirQualityChart color="text-emerald-300" reading={count_100} title={'10.0 µm³'} />
+			</div>
+		</div>
+
+		<div class="section-card">
+			<div class="section-header">
+				<h3>PM (Indoor)</h3>
+				<span class="badge badge-indoor">indoor calibration</span>
+			</div>
+			<div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+				<AirQualityChart color="text-red-400" reading={PM1_0_1} title={'PM1.0'} />
+				<AirQualityChart color="text-red-400" reading={PM2_5_1} title={'PM2.5'} />
+				<AirQualityChart color="text-red-400" reading={PM10_1} title={'PM10'} />
+			</div>
+		</div>
+
+		<div class="section-card">
+			<div class="section-header">
+				<h3>PM (Outdoor)</h3>
+				<span class="badge badge-outdoor">outdoor calibration</span>
+			</div>
+			<div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+				<AirQualityChart color="text-indigo-300" reading={PM1_0_2} title={'PM1.0'} />
+				<AirQualityChart color="text-indigo-300" reading={PM2_5_2} title={'PM2.5'} />
+				<AirQualityChart color="text-indigo-300" reading={PM10_2} title={'PM10'} />
+			</div>
+		</div>
 	</div>
-	<div class="flex flex-row gap-1">
-		<AirQualityChart reading={count_100} title={'10.0 µm³ count per 0.1L'} />
-	</div>
-</div>
+</section>
 
 <!-- <AirQualityParticlesChart data={airQualityData} /> -->
 
 <div>Future: will contain counts for heavy metal particles, contaminants, etc.</div>
+
+<style>
+	.legend-card {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+		gap: 0.5rem 1rem;
+		align-items: center;
+		background: #101018;
+		border: 1px solid rgba(255, 255, 255, 0.05);
+		border-radius: 12px;
+		padding: 0.75rem 1rem;
+		color: #e5e7eb;
+	}
+
+	.legend-dot {
+		width: 10px;
+		height: 10px;
+		border-radius: 9999px;
+		display: inline-block;
+		box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.03);
+	}
+
+	.legend-dot--indoor {
+		background: #f87171;
+	}
+
+	.legend-dot--outdoor {
+		background: #93c5fd;
+	}
+
+	.legend-dot--count {
+		background: #34d399;
+	}
+
+	.measurement-key {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+		gap: 0.75rem 1rem;
+		padding: 0.75rem 1rem;
+		border-radius: 12px;
+		background: #0e0e14;
+		border: 1px solid rgba(255, 255, 255, 0.04);
+	}
+
+	.key-item {
+		display: grid;
+		grid-template-columns: auto 1fr;
+		gap: 0.5rem;
+		align-items: start;
+		color: #e5e7eb;
+	}
+
+	.key-title {
+		font-weight: 600;
+		color: #f8fafc;
+		margin: 0;
+	}
+
+	.key-desc {
+		margin: 0.15rem 0 0;
+		font-size: 0.875rem;
+		color: #cbd5e1;
+	}
+
+	.section-card {
+		background: #0e0e14;
+		border: 1px solid rgba(255, 255, 255, 0.05);
+		border-radius: 14px;
+		padding: 1rem 1.2rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+	}
+
+	.section-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.75rem;
+		flex-wrap: wrap;
+	}
+
+	.badge {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
+		padding: 0.25rem 0.75rem;
+		border-radius: 9999px;
+		font-size: 0.8rem;
+		font-weight: 600;
+		color: #f8fafc;
+	}
+
+	.badge-count {
+		background: rgba(52, 211, 153, 0.15);
+		border: 1px solid rgba(52, 211, 153, 0.35);
+		color: #bbf7d0;
+	}
+
+	.badge-indoor {
+		background: rgba(248, 113, 113, 0.15);
+		border: 1px solid rgba(248, 113, 113, 0.35);
+		color: #fecdd3;
+	}
+
+	.badge-outdoor {
+		background: rgba(147, 197, 253, 0.15);
+		border: 1px solid rgba(147, 197, 253, 0.35);
+		color: #dbeafe;
+	}
+</style>
