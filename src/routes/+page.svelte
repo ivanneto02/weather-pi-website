@@ -144,17 +144,6 @@
 		</p>
 	</div>
 
-	<div class="legend-card">
-		<div class="flex items-center gap-2">
-			<span class="legend-dot legend-dot--indoor"></span>
-			<span>Indoor calibration</span>
-		</div>
-		<div class="flex items-center gap-2">
-			<span class="legend-dot legend-dot--outdoor"></span>
-			<span>Outdoor calibration</span>
-		</div>
-	</div>
-
 	<div class="measurement-key">
 		<div class="key-item">
 			<span class="legend-dot legend-dot--count"></span>
@@ -224,18 +213,6 @@
 <!-- <AirQualityParticlesChart data={airQualityData} /> -->
 
 <style>
-	.legend-card {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-		gap: 0.5rem 1rem;
-		align-items: center;
-		background: #000;
-		border: 1px solid rgba(255, 255, 255, 0.05);
-		border-radius: 12px;
-		padding: 0.75rem 1rem;
-		color: #e5e7eb;
-	}
-
 	.legend-dot {
 		width: 10px;
 		height: 10px;
@@ -355,8 +332,10 @@
 		align-items: center;
 		gap: 0.65rem;
 		margin-top: 0.75rem;
+		padding-left: 0.35rem;
 		font-weight: 600;
 		color: #e2e8f0;
+		overflow: visible;
 	}
 
 	.hero__time {
@@ -367,9 +346,23 @@
 	.status-dot {
 		width: 10px;
 		height: 10px;
+		flex-shrink: 0;
 		border-radius: 9999px;
 		background: #22c55e;
-		box-shadow: 0 0 0 6px rgba(34, 197, 94, 0.15), 0 0 12px rgba(34, 197, 94, 0.6);
+		box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.16), 0 0 10px rgba(34, 197, 94, 0.45);
+		animation: livePulse 2.8s ease-in-out infinite;
+	}
+
+	@keyframes livePulse {
+		0%,
+		100% {
+			background: #166534;
+			box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.14), 0 0 8px rgba(34, 197, 94, 0.35);
+		}
+		50% {
+			background: #22c55e;
+			box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.16), 0 0 10px rgba(34, 197, 94, 0.45);
+		}
 	}
 
 	.eyebrow {
