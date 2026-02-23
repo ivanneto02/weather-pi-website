@@ -6,8 +6,8 @@
 
 <p>
 	A Raspberry Pi 1 was connected alongside PMS5003 and BME280 sensors to gather air quality,
-	temperature, humidity, and pressure information from the environment around the UC Riverside area
-	in Riverside, CA.
+	temperature, humidity, and pressure information from the environment in Riverside, CA, near UC
+	Riverside.
 </p>
 
 <p>The data you see displayed in the homepage is real-time and gathered 10 seconds ago, at most.</p>
@@ -74,6 +74,6 @@
 
 <p>
 	Note: "factory" vs "outside" refers to the sensor calibration. Factory calibration is apt for
-	indoor use, and "outside" calibration is for outdoor environments. This Raspberry Pi sits indoors,
-	so the "factory" measurement is more accurate.
+	indoor use, and "outside" calibration is for outdoor environments. This Raspberry Pi is currently
+	deployed outdoors, so the "outside" measurement is the more representative one.
 </p>

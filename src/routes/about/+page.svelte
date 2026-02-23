@@ -7,7 +7,7 @@
 	temperature, and humidity sensor), and PMS5003 Digital Particle Concentration Laser Sensor.
 </p>
 
-<p>These sensors gather the following data from outside my apartment, located in Riverside, CA:</p>
+<p>These sensors gather the following data from an outdoor deployment in Riverside, CA:</p>
 
 <ul>
 	<li>Temperature</li>

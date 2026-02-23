@@ -4,7 +4,7 @@
 
 <fluent-card
 	on:click
-	class="p-2 text-white text-xs flex-grow border bg-inherit border-1 border-indigo-700 text-center hover:border-2 hover:transition-all hover:duration-100 hover:bg-gray-900 hover:text-sm transition-all duration-100"
+	class="flex flex-grow origin-center flex-col items-center justify-center gap-1 border border-indigo-700 bg-inherit p-3 text-center text-xs text-white [&>*]:m-0 will-change-transform transition-[transform,filter,background-color] duration-150 hover:scale-[1.02] hover:bg-gray-900 hover:brightness-110"
 >
 	{@render children?.()}
 </fluent-card>
