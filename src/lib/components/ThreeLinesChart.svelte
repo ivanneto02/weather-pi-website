@@ -1,6 +1,7 @@
 <script lang="ts">
 	import ChartAndSelector from './ChartAndSelector.svelte';
 	import { scaleLinear, scaleTime } from 'd3-scale';
+	import { HTP_ENDPOINT } from '$lib/config/endpoints';
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 
@@ -35,7 +36,7 @@
 	measurement="temperature"
 	title="Temperature"
 	initialWindow="1h"
-	endpoint="/api/samples/latest"
+	endpoint={HTP_ENDPOINT}
 	samples={20}
 	bottom_axis_label="time"
 	left_axis_label="Temperature (C)"
@@ -52,7 +53,7 @@
 	measurement="humidity"
 	title="Relative Humidity"
 	initialWindow="1h"
-	endpoint="/api/samples/latest"
+	endpoint={HTP_ENDPOINT}
 	samples={20}
 	bottom_axis_label="time"
 	left_axis_label="Humidity"
@@ -69,7 +70,7 @@
 	measurement="pressure"
 	title="Pressure"
 	initialWindow="1h"
-	endpoint="/api/samples/latest"
+	endpoint={HTP_ENDPOINT}
 	samples={20}
 	bottom_axis_label="time"
 	left_axis_label="Pressure (hPa)"
