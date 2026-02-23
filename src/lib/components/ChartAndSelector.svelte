@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { createEventDispatcher, onMount } from 'svelte';
+	import { createEventDispatcher } from 'svelte';
 	import TimeWindowSelector from './TimeWindowSelector.svelte';
 
 	import { Chart, Svg, Axis, Spline, Highlight, Tooltip } from 'layerchart';
@@ -25,16 +25,9 @@
 
 	const dispatch = createEventDispatcher<{ select: string }>();
 
-	let selectedWindow = initialWindow;
-	let chartData = dataSeries;
-
-	onMount(() => {
-		fetchWindow(selectedWindow);
-	});
-
-	$: if (dataSeries && dataSeries !== chartData) {
-		chartData = dataSeries;
-	}
+	let selectedWindow = $state(initialWindow);
+	let fetchedData = $state<typeof dataSeries | null>(null);
+	let chartData = $derived(fetchedData ?? dataSeries);
 
 	async function fetchWindow(windowValue: string) {
 		const url = `${endpoint}?window=${windowValue}&samples=${samples}`;
@@ -45,9 +38,18 @@
 				throw new Error(`Request failed with status ${response.status}`);
 			}
 			const payload = await response.json();
-			chartData = Array.isArray(payload) ? payload : payload?.data ?? stubData(windowValue);
+			const raw = Array.isArray(payload) ? payload : payload?.data ?? stubData(windowValue);
+			// DynamoDB returns string values — coerce to numbers for the chart
+			fetchedData = raw.map((row: Record<string, unknown>, i: number) => {
+				const coerced: Record<string, number> = { index: i };
+				for (const [key, val] of Object.entries(row)) {
+					if (key === 'pk') continue;
+					coerced[key] = Number(val);
+				}
+				return coerced;
+			});
 		} catch (error) {
-			chartData = stubData(windowValue);
+			fetchedData = stubData(windowValue);
 		}
 	}
 
