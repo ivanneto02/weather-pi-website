@@ -9,6 +9,7 @@
 	import { meanAirQualityData } from '$lib/processing/meanAirQualityData.ts';
 	import { meanTmpHumPreData } from '$lib/processing/meanTmpHumPreData';
 	import { on } from 'svelte/events';
+	import { HTP_ENDPOINT, AQ_ENDPOINT } from '$lib/config/endpoints';
 
 	let tmpHumPreData: Array<any> | null = null;
 
@@ -38,7 +39,7 @@
 	let dt = getCurrentDateString();
 
 	async function fetchAirQualityData() {
-		let response = fetch('https://jbn6u8l8h7.execute-api.us-west-1.amazonaws.com/prod/samples', {
+		let response = fetch(AQ_ENDPOINT, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json'
@@ -64,7 +65,7 @@
 	}
 
 	async function fetchTmpHumPreData() {
-		let response = fetch('https://93xdazuw09.execute-api.us-west-1.amazonaws.com/prod/samples', {
+		let response = fetch(HTP_ENDPOINT, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json'
