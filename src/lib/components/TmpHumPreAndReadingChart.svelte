@@ -25,8 +25,8 @@
 	};
 </script>
 
-<div class="mean-shell">
-	<div class="mean-list">
+<div class="grid w-full items-stretch gap-[0.85rem] sm:grid-cols-[minmax(180px,220px)_1fr]">
+	<div class="flex flex-col gap-[0.55rem]">
 		<TempChart
 			on:click={() => {
 				handleClick('temperature');
@@ -46,7 +46,7 @@
 			reading={pre}
 		/>
 	</div>
-	<div class="mean-info">
+	<div class="h-full rounded-[10px] border border-white/[0.06] bg-black px-4 py-[0.85rem] text-[#e5e7eb]">
 		{#if visibility && currentInfo == 'temperature'}
 			<TmpInfo />
 		{:else if visibility && currentInfo == 'humidity'}
@@ -54,43 +54,7 @@
 		{:else if visibility && currentInfo == 'pressure'}
 			<PreInfo />
 		{:else}
-			<p class="placeholder">Tap a tile to see what this measurement means.</p>
+			<p class="m-0 text-[0.9rem] text-[#94a3b8]">Tap a tile to see what this measurement means.</p>
 		{/if}
 	</div>
 </div>
-
-<style>
-	.mean-shell {
-		display: grid;
-		grid-template-columns: minmax(180px, 220px) 1fr;
-		gap: 0.85rem;
-		align-items: stretch;
-	}
-
-	.mean-list {
-		display: flex;
-		flex-direction: column;
-		gap: 0.55rem;
-	}
-
-	.mean-info {
-		background: #0b0b12;
-		border: 1px solid rgba(255, 255, 255, 0.06);
-		border-radius: 10px;
-		padding: 0.85rem 1rem;
-		color: #e5e7eb;
-		height: 100%;
-	}
-
-	.placeholder {
-		margin: 0;
-		color: #94a3b8;
-		font-size: 0.9rem;
-	}
-
-	@media (max-width: 640px) {
-		.mean-shell {
-			grid-template-columns: 1fr;
-		}
-	}
-</style>

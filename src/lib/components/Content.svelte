@@ -2,6 +2,8 @@
 	let { children } = $props();
 </script>
 
-<div class="content-shell bg-inherit text-white flex flex-col min-h-screen justify-between max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 gap-8">
+<div
+	class="mx-auto flex min-h-screen w-full max-w-500 flex-col justify-between gap-8 border-x border-indigo-950 bg-black px-8 text-white sm:px-14 lg:px-50"
+>
 	{@render children?.()}
 </div>

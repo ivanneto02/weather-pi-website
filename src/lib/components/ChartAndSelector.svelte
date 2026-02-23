@@ -115,7 +115,7 @@
 
 	<slot {selectedWindow} />
 
-	<div class="h-[250px] p-4 rounded bg-[#101018] border border-white/5" data-window={selectedWindow}>
+	<div class="h-[250px] p-4 rounded bg-black border border-white/5" data-window={selectedWindow}>
 		<Chart
 			data={chartData}
 			x={(d) => new Date(d.timestamp)}

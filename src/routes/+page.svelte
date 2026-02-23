@@ -229,7 +229,7 @@
 		grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
 		gap: 0.5rem 1rem;
 		align-items: center;
-		background: #101018;
+		background: #000;
 		border: 1px solid rgba(255, 255, 255, 0.05);
 		border-radius: 12px;
 		padding: 0.75rem 1rem;
@@ -262,7 +262,7 @@
 		gap: 0.75rem 1rem;
 		padding: 0.75rem 1rem;
 		border-radius: 12px;
-		background: #0e0e14;
+		background: #000;
 		border: 1px solid rgba(255, 255, 255, 0.04);
 	}
 
@@ -287,7 +287,7 @@
 	}
 
 	.section-card {
-		background: #0e0e14;
+		background: #000;
 		border: 1px solid rgba(255, 255, 255, 0.05);
 		border-radius: 14px;
 		padding: 1rem 1.2rem;
@@ -390,7 +390,7 @@
 	}
 
 	.mean-block {
-		background: #0e0e14;
+		background: #000;
 		border: 1px solid rgba(255, 255, 255, 0.05);
 		border-radius: 14px;
 		padding: 1rem 1.2rem;
