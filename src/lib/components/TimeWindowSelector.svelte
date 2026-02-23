@@ -26,7 +26,7 @@
 	}
 </script>
 
-<div class="flex flex-row justify-center gap-5 pb-10">
+<div class="flex flex-row justify-center gap-3 sm:gap-4 pb-10 flex-wrap">
 	{#each windows as window}
 		<TimeWindowSelectorItem
 			label={window.label}
