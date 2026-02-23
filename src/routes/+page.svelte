@@ -106,15 +106,35 @@
 	});
 </script>
 
-<h1>WeatherPI Data Viewer</h1>
+<section class="hero">
+	<div class="hero__left">
+		<p class="eyebrow">WeatherPI</p>
+		<h1>Weather & Air Monitor</h1>
+		<p class="hero__sub">Real-time readings from Riverside, CA</p>
+		<div class="hero__status">
+			<span class="status-dot"></span>
+			<span>Live</span>
+			<span class="hero__time">
+				{dt.dayName}, {dt.month} {dt.day}, {dt.year} · {dt.thour}:{dt.minute}:{dt.second} {dt.ampm}
+			</span>
+		</div>
+	</div>
+</section>
 
-<p>{dt.dayName}, {dt.month} {dt.day}, {dt.year} ({dt.thour}:{dt.minute}:{dt.second} {dt.ampm})</p>
+<section class="mean-block">
+	<div class="mean-card__header">
+		<h3>10-minute means</h3>
+	</div>
+	<TmpHumPreAndReadingChart {tmp} {hum} {pre} />
+</section>
 
-<h3>Mean values in the last 10 minutes:</h3>
-
-<TmpHumPreAndReadingChart {tmp} {hum} {pre} />
-
-<ThreeLinesChart data={tmpHumPreData} />
+<section class="chart-block">
+	<div class="chart-block__header">
+		<h3>Last samples</h3>
+		<p class="chart-block__hint">Raw sensor traces for temperature, humidity, and pressure.</p>
+	</div>
+	<ThreeLinesChart data={tmpHumPreData} />
+</section>
 
 <section class="flex flex-col gap-4">
 	<div class="flex flex-col gap-1">
@@ -311,5 +331,90 @@
 		background: rgba(147, 197, 253, 0.15);
 		border: 1px solid rgba(147, 197, 253, 0.35);
 		color: #dbeafe;
+	}
+
+	.hero {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 1rem;
+		align-items: center;
+	}
+
+	.hero__left h1 {
+		font-size: clamp(1.8rem, 2.4vw, 2.4rem);
+		margin: 0.25rem 0;
+	}
+
+	.hero__sub {
+		color: #cbd5e1;
+		margin: 0;
+	}
+
+	.hero__status {
+		display: flex;
+		align-items: center;
+		gap: 0.65rem;
+		margin-top: 0.75rem;
+		font-weight: 600;
+		color: #e2e8f0;
+	}
+
+	.hero__time {
+		color: #94a3b8;
+		font-weight: 500;
+	}
+
+	.status-dot {
+		width: 10px;
+		height: 10px;
+		border-radius: 9999px;
+		background: #22c55e;
+		box-shadow: 0 0 0 6px rgba(34, 197, 94, 0.15), 0 0 12px rgba(34, 197, 94, 0.6);
+	}
+
+	.eyebrow {
+		text-transform: uppercase;
+		letter-spacing: 0.12em;
+		font-size: 0.8rem;
+		color: #94a3b8;
+		margin: 0;
+	}
+
+	.mean-card__header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		color: #e5e7eb;
+		font-weight: 600;
+		gap: 0.5rem;
+	}
+
+	.mean-block {
+		background: #0e0e14;
+		border: 1px solid rgba(255, 255, 255, 0.05);
+		border-radius: 14px;
+		padding: 1rem 1.2rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.6rem;
+		box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+		margin-top: 1rem;
+	}
+
+	.chart-block {
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+		margin-top: 1.25rem;
+	}
+
+	.chart-block__header h3 {
+		margin: 0;
+	}
+
+	.chart-block__hint {
+		margin: 0.1rem 0 0;
+		color: #94a3b8;
+		font-size: 0.95rem;
 	}
 </style>
