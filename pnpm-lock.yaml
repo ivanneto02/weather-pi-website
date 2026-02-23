@@ -41,9 +41,6 @@ importers:
       lucide-svelte:
         specifier: ^0.541.0
         version: 0.541.0(svelte@5.46.0)
-      weather-pi-website:
-        specifier: 'link:'
-        version: 'link:'
     devDependencies:
       '@eslint/compat':
         specifier: ^1.2.5
